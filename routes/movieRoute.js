@@ -76,4 +76,17 @@ router.get("/getMovies/:mid/:tid/:scid", async (req, res) => {
     res.send(error);
   }
 });
+
+// getting particular movie using id
+router.get("/getMovies/:id", async (req, res) => {
+  try {
+    const movies = await Movie.find({ _id: req.params.id }).populate({
+      path: "theatre",
+      populate: { path: "screens", populate: { path: "showTime" } },
+    });
+    res.send(movies);
+  } catch (error) {
+    res.send(error);
+  }
+});
 module.exports = router;
